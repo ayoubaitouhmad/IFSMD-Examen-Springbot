@@ -61,6 +61,19 @@
 			<artifactId>thymeleaf-layout-dialect</artifactId>
 			<version>3.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-logging</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+			<version>8.0.33</version> <!-- Use the latest version or the version compatible with your setup -->
+		</dependency>
+
+
 	</dependencies>
 	<build>
 		<plugins>
