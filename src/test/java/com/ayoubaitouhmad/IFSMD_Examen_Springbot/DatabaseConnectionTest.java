@@ -17,6 +17,7 @@ public class DatabaseConnectionTest {
 
     @Test
     public void testDataSource() throws Exception {
+
         assertNotNull(dataSource.getConnection());
         System.out.println("Database connected successfully.");
     }
