@@ -25,13 +25,13 @@
 
 <body class="app">
 
-<footer th:replace="layouts/header :: header"></footer>
+<footer th:replace="include/header :: header"></footer>
 
 <div class="app-wrapper">
     <div class="app-content pt-3 p-md-3 p-lg-4">
         <div layout:fragment="content"></div>
     </div>
-    <footer  th:replace="layouts/footer :: footer"></footer>
+    <footer  th:replace="include/footer :: footer"></footer>
 </div>
 
 
