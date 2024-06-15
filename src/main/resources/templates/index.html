@@ -3,6 +3,9 @@
     <h1 th:text="${message}">Default Message</h1>
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid asperiores cum cumque doloribus est illo magni quibusdam sint velit. At consequuntur delectus dolorem eligendi expedita obcaecati odit officiis quidem reiciendis.
 
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Logout" />
+    </form>
     <form  action="/registre"  method="post">
         <label for="name">Name:</label>
         <input type="text" id="name"  name="name"/><br>

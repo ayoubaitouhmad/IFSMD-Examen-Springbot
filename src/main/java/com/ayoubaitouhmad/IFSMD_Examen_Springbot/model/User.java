@@ -15,8 +15,25 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private String username;
+    private String role;
 
-    // Getters and setters
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
 
     public Long getId() {
         return id;
@@ -48,5 +65,11 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+
+    @Override
+    public String toString() {
+        return "name=" + name + ", email=" + email + ", password=" + password + ", username=" + username + ", id=" + id;
     }
 }

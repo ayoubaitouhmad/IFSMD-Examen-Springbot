@@ -2,6 +2,9 @@ package com.ayoubaitouhmad.IFSMD_Examen_Springbot.controller;
 
 import com.ayoubaitouhmad.IFSMD_Examen_Springbot.config.DbConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,25 +30,28 @@ public class WelcomeController {
 
     @GetMapping("/welcome")
     public ModelAndView welcome(ModelAndView modelAndView) throws SQLException {
-        modelAndView.setViewName("index");  // The name of the Thymeleaf template
-        modelAndView.addObject("message", "Hello, welcome to our website!");
-        return modelAndView;
-    }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    @GetMapping("/login")
-    public ModelAndView login(ModelAndView modelAndView) throws SQLException {
-        modelAndView.setViewName("login");  // The name of the Thymeleaf template
-        modelAndView.addObject("message", "Hello, welcome to our website!");
-        return modelAndView;
-    }
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            logger.info(((UserDetails) principal).getUsername());
+        }
 
-    @PostMapping("/registre")
-    public ModelAndView nice(ModelAndView modelAndView, @RequestParam Map<String, String> formData) {
-        logger.info(formData.get("name"));
+
+
+
         modelAndView.setViewName("index");  // The name of the Thymeleaf template
-        modelAndView.addObject("message", "Hello, welcome to our website!");
         return modelAndView;
     }
+//
+//
+//    @PostMapping("/registre")
+//    public ModelAndView nice(ModelAndView modelAndView, @RequestParam Map<String, String> formData) {
+//        logger.info(formData.get("name"));
+//        modelAndView.setViewName("index");  // The name of the Thymeleaf template
+//        modelAndView.addObject("message", "Hello, welcome to our website!");
+//        return modelAndView;
+//    }
 
 
     @GetMapping("/database")
