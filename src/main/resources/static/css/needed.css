@@ -1,0 +1,23 @@
+.required {
+    position: relative;
+}
+.required:after {
+    content: "*";
+    height: 10px;
+    width: 10px;
+    color: red;
+}
+
+
+.required:hover::before {
+    content: "Please fill out this field"; /* Change content on hover */
+    color: white;
+    background-color: black;
+    padding: 3px 6px;
+    border-radius: 5px;
+    position: absolute; /* Position the tooltip */
+    top: -25px; /* Position above the element */
+    left: 0;
+    white-space: nowrap; /* Keeps the content on one line */
+    z-index: 10; /* Ensures it appears above other content */
+}

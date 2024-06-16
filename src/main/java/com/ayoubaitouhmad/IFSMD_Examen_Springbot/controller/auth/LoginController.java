@@ -1,8 +1,6 @@
 package com.ayoubaitouhmad.IFSMD_Examen_Springbot.controller.auth;
 
 import com.ayoubaitouhmad.IFSMD_Examen_Springbot.controller.BaseController;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +15,7 @@ public class LoginController extends BaseController {
         if (isConnected()) {
             return "redirect:/welcome";
         } else {
-            return "login";
+            return "pages/auth/login";
         }
     }
 

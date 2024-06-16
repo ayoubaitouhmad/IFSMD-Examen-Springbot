@@ -1,30 +1,65 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Register User</title>
-</head>
-<body>
-<h1>Register</h1>
-<form th:action="@{/register}" th:object="${user}" method="post">
-    <div>
-        <label for="name">name:</label>
-        <input type="text" id="name" th:field="*{name}" required />
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/auth}">
+<div layout:fragment="content">
+
+    <div class="app-auth-branding mb-4">
+        <a class="app-logo" href="index.html">
+            <img class="logo-icon me-2" src="images/app-logo.svg" alt="logo">
+        </a>
     </div>
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" th:field="*{username}" required />
+    <h2 class="auth-heading text-center mb-5">
+        Sign up to Portal
+    </h2>
+    <div class="auth-form-container text-start">
+        <form th:action="@{/register}"  method="post">
+            <div class="email mb-3">
+                <label class="sr-only required" for="name">name</label>
+                <input id="name" name="name" type="text" class="form-control" placeholder="name" required="required">
+            </div>
+            <div class="email mb-3">
+                <label class="sr-only required" for="email">Email</label>
+                <input id="email" name="email" type="email" class="form-control" placeholder="email" required="required">
+            </div>
+
+            <div class="email mb-3">
+                <label class="sr-only required" for="username">Username</label>
+                <input id="username" name="username" type="text" class="form-control" placeholder="username" required="required">
+            </div>
+
+
+            <div class="password mb-3">
+
+                <label class="sr-only required" for="password">Password</label>
+                <input id="password" name="password" type="password" class="form-control password" placeholder="Password" required="required">
+
+
+
+                <!--                <div class="extra mt-3 row justify-content-between">-->
+                <!--                    <div class="col-6">-->
+                <!--                        <div class="form-check">-->
+                <!--                            <input class="form-check-input" type="checkbox" value="" id="RememberPassword">-->
+                <!--                            <label class="form-check-label" for="RememberPassword">-->
+                <!--                                Remember me-->
+                <!--                            </label>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                    <div class="col-6">-->
+                <!--                        <div class="forgot-password text-end">-->
+                <!--                            <a href="reset-password.html">Forgot password?</a>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn app-btn-primary w-100 theme-btn mx-auto">Log In</button>
+            </div>
+        </form>
+
+        <div class="auth-option text-center pt-5">
+            No Account? Sign up
+            <a class="text-link" th:href="@{/register}" >here</a>.
+        </div>
     </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" th:field="*{password}" required />
-    </div>
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" th:field="*{email}" required />
-    </div>
-    <div>
-        <button type="submit">Register</button>
-    </div>
-</form>
-</body>
-</html>
+
+
+</div>
+

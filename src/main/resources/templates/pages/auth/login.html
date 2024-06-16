@@ -1,0 +1,56 @@
+
+
+
+
+
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/auth}">
+<div layout:fragment="content">
+
+    <div class="app-auth-branding mb-4">
+        <a class="app-logo" href="index.html"><img class="logo-icon me-2" src="images/app-logo.svg" alt="logo"></a></div>
+    <h2 class="auth-heading text-center mb-5">Log in to Portal</h2>
+    <div class="auth-form-container text-start">
+        <form th:action="@{/login}"  method="post">
+            <div class="email mb-3">
+                <label class="sr-only required" for="username">Username</label>
+                <input id="username" name="username" type="text" class="form-control" placeholder="username" required="required">
+            </div>
+
+
+            <div class="password mb-3">
+
+                <label class="sr-only required" for="password">Password</label>
+                <input id="password" name="password" type="password" class="form-control password" placeholder="Password" required="required">
+
+
+
+<!--                <div class="extra mt-3 row justify-content-between">-->
+<!--                    <div class="col-6">-->
+<!--                        <div class="form-check">-->
+<!--                            <input class="form-check-input" type="checkbox" value="" id="RememberPassword">-->
+<!--                            <label class="form-check-label" for="RememberPassword">-->
+<!--                                Remember me-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-6">-->
+<!--                        <div class="forgot-password text-end">-->
+<!--                            <a href="reset-password.html">Forgot password?</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn app-btn-primary w-100 theme-btn mx-auto">Log In</button>
+            </div>
+        </form>
+
+        <div class="auth-option text-center pt-5">
+            No Account? Sign up
+            <a class="text-link" th:href="@{/register}" >here</a>.
+        </div>
+    </div>
+
+
+</div>
+
