@@ -1,5 +1,6 @@
 package com.ayoubaitouhmad.IFSMD_Examen_Springbot.controller;
 
+import com.ayoubaitouhmad.IFSMD_Examen_Springbot.model.User;
 import com.ayoubaitouhmad.IFSMD_Examen_Springbot.service.FileDocumentService;
 import com.ayoubaitouhmad.IFSMD_Examen_Springbot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,7 @@ public class WelcomeController extends BaseController {
     }
 
     @GetMapping("/welcome")
-    public ModelAndView welcome(ModelAndView modelAndView) throws SQLException {
-//        modelAndView.addObject("user" , userService.connectedUser().get());
+    public ModelAndView welcome(ModelAndView modelAndView , @ModelAttribute("currentConnectedUser") User currentConnectedUser) throws SQLException {
         modelAndView.setViewName("index");  // The name of the Thymeleaf template
         return modelAndView;
     }

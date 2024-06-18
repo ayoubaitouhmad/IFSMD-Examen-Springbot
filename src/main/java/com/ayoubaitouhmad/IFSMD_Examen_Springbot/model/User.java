@@ -12,57 +12,42 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
 @Entity
 @Table(name = "users" , schema = "ifsmd_examen_springbot")
 public class User  implements UserDetails {
-
-
-    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
     @Setter
-    @Getter
     private String name;
 
     @Setter
-    @Getter
     private String email;
 
     @Setter
-    @Getter
     private String password;
 
-    @Getter
     @Setter
     private String username;
 
 
     @Setter
-    @Getter
     private String role;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) // Eager fetching
     @JoinColumn(name = "profile_image_id", referencedColumnName = "id")
     private FileDocument profileImage;
-
-    public FileDocument getProfileImage() {
-        return this.profileImage;
-    }
-
-
 
 
     @CreationTimestamp
     @Column(updatable = false)
-    @Getter
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Getter
     private LocalDateTime updatedAt;
 
 
