@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Uploaded Images</title>
+    <!-- Include any required CSS or JS here -->
+</head>
+<body>
+<h1>Uploaded Images</h1>
+<div>
+    <a href="/upload">Upload More Images</a>
+
+</div>
+<div th:if="${images.isEmpty()}">
+    <p>No images uploaded yet!</p>
+
+</div>
+
+<div>
+    <ul>
+        <li th:each="image : ${images}">
+            <img th:src="@{'/stream/' + ${image.getData()}}" alt="Uploaded Image" th:alt="${image.getFileName()}" />
+
+        </li>
+    </ul>
+</div>
+</body>
+</html>
