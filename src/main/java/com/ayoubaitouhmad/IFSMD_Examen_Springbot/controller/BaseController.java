@@ -1,11 +1,15 @@
 package com.ayoubaitouhmad.IFSMD_Examen_Springbot.controller;
 
+import com.ayoubaitouhmad.IFSMD_Examen_Springbot.model.User;
+import com.ayoubaitouhmad.IFSMD_Examen_Springbot.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
-
+import java.util.Optional;
 
 
 public class BaseController {
@@ -29,4 +33,6 @@ public class BaseController {
         }
         return  isConnected;
     }
+
+
 }
