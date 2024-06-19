@@ -64,4 +64,11 @@ public class UserService {
        return Optional.empty();
     }
 
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+
+
+
 }
