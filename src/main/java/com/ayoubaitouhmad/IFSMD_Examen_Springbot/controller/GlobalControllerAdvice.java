@@ -23,11 +23,11 @@ public class GlobalControllerAdvice {
     }
 
     @ModelAttribute("currentConnectedUser")
-    public Optional<User> getCurrentConnectedUser() {
+    public User getCurrentConnectedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
-            return userService.findByUserName(authentication.getName());
+            return userService.findByUserName(authentication.getName()).orElse(null);
         }
-        return Optional.empty();
+        return null;
     }
 }
