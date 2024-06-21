@@ -55,6 +55,11 @@ public class User  implements UserDetails {
     private FileDocument profileImage;
 
 
+    @Getter
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Article> articles;
+
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -105,4 +110,8 @@ public class User  implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
+
+
+
+
 }
