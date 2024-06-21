@@ -1,50 +1,92 @@
 package com.ayoubaitouhmad.IFSMD_Examen_Springbot.controller.user;
 
 import com.ayoubaitouhmad.IFSMD_Examen_Springbot.controller.BaseController;
+import com.ayoubaitouhmad.IFSMD_Examen_Springbot.controller.auth.LoginController;
+import com.ayoubaitouhmad.IFSMD_Examen_Springbot.model.FileDocument;
 import com.ayoubaitouhmad.IFSMD_Examen_Springbot.model.User;
+import com.ayoubaitouhmad.IFSMD_Examen_Springbot.service.ImageService;
 import com.ayoubaitouhmad.IFSMD_Examen_Springbot.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/profile")
-public class ProfileController  extends BaseController {
-
+public class ProfileController extends BaseController {
 
     private final UserService userService;
+    private final ImageService imageService;
+    private final LoginController loginController;
 
     @Autowired
-    ProfileController(UserService userService) {
+    public ProfileController(UserService userService, ImageService imageService, LoginController loginController) {
         this.userService = userService;
+        this.imageService = imageService;
+        this.loginController = loginController;
     }
 
     @GetMapping
-    public String index(Model model ) {
-        model.addAttribute("pageTitle" , "profile");  // The name of the Thymeleaf template
+    public String showProfileForm(Model model, @ModelAttribute("message") String message) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+
+        User currentUser = userService.findByUserName(currentUsername).orElseThrow(() -> new RuntimeException("User not found"));
+        if (!model.containsAttribute("userForm")) {
+            model.addAttribute("userForm", currentUser);
+        }
+        model.addAttribute("message", message);
+
         return "pages/user/profile";
     }
 
     @PostMapping
-    public ModelAndView updateProfile(@ModelAttribute User userForm , @ModelAttribute("currentConnectedUser") User user) {
+    public String updateProfile(
+            @Valid @ModelAttribute("userForm") User userForm,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
+
+        if (bindingResult.hasErrors()) {
+
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userForm", bindingResult);
+            redirectAttributes.addFlashAttribute("userForm", userForm);
+            return "redirect:/profile";
+        }
+
+        // TODO: add file and update user profile
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
 
 
-        user.setName(userForm.getName());
-        user.setEmail(userForm.getEmail());
-        user.setUsername(userForm.getUsername());
+        User currentUser = userService.findByUserName(currentUsername).orElseThrow(() -> new RuntimeException("User not found"));
+        currentUser.setName(userForm.getName());
+        currentUser.setEmail(userForm.getEmail());
 
-        userService.saveUser(user);
 
-        ModelAndView modelAndView = new ModelAndView("pages/user/profile");
-        modelAndView.addObject("user", user);
-        modelAndView.addObject("message", "Profile updated successfully!");
+        userService.saveUser(currentUser);
+        redirectAttributes.addFlashAttribute("message", "Profile updated successfully!");
+        return "redirect:/profile";
+    }
 
-        return modelAndView;
+    @PostMapping("/image")
+    public String updateProfilePicture(
+            @RequestParam("profileImage") MultipartFile profileImage,
+            RedirectAttributes redirectAttributes
+    ) throws IOException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+        User currentUser = userService.findByUserName(currentUsername).orElseThrow(() -> new RuntimeException("User not found"));
+        userService.updateProfilePicture(currentUser ,profileImage );
+        redirectAttributes.addFlashAttribute("message", "Profile updated successfully!");
+        return "redirect:/profile";
     }
 }

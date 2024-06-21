@@ -1,45 +1,102 @@
-<html
-        xmlns:th="http://www.thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-        layout:decorate="~{layouts/app}">
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/app}">
 <div layout:fragment="content">
 
+
     <h1 class="app-page-title">My Account</h1>
-    <div class="row gy-4">
-        <div class="row g-4 settings-section">
-            <div class="col-12 col-md-4">
-                <h3 class="section-title">General</h3>
-                <div class="section-intro">Settings section intro goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="help.html">Learn more</a></div>
-            </div>
-            <div class="col-12 col-md-8">
-                <div class="app-card app-card-settings shadow-sm p-4">
 
-                    <div th:if="${message}">
-                        <p th:text="${message}"></p>
-                    </div>
+    <div class="row">
+        <div class="col-12 col-md-4">
+            <h3 class="section-title">General</h3>
 
-                    <div class="app-card-body">
-                        <form class="settings-form" method="post" action="/profile">
-                            <div class="mb-3">
-                                <label for="setting-input-1" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="setting-input-1" placeholder="Name" name="name" required th:value="${currentConnectedUser.getName()  }">
-                            </div>
-                            <div class="mb-3">
-                                <label for="setting-input-2" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="setting-input-2" placeholder="Email" name="Email" required th:value="${currentConnectedUser.getEmail()}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="setting-input-3" class="form-label">Username</label>
-                                <input type="text" name="username" placeholder="Username" class="form-control" id="setting-input-3" required th:value="${currentConnectedUser.getUsername()}" >
-                            </div>
-                            <button type="submit" class="btn app-btn-primary" >Save Changes</button>
-                        </form>
-                    </div><!--//app-card-body-->
+        </div>
+        <div class="col-12 col-md-8">
+            <div class="app-card app-card-settings shadow-sm p-4">
 
-                </div><!--//app-card-->
+                <div th:if="${message}">
+                    <p th:text="${message}"></p>
+                </div>
+
+                <div class="app-card-body">
+                    <form enctype="multipart/form-data" class="settings-form" method="post" th:action="@{/profile}"
+                          th:object="${userForm}">
+
+                        <div class="mb-3">
+                            <label for="setting-input-1" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="setting-input-1" placeholder="Name"
+                                   th:field="*{name}" required>
+                            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="setting-input-2" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="setting-input-2" placeholder="Email"
+                                   th:field="*{email}" required>
+                            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                                 class="text-danger"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="setting-input-3" class="form-label">Username</label>
+                            <input type="text" class="form-control readonly" id="setting-input-3"
+                                   placeholder="Username" th:field="*{username}" readonly>
+                        </div>
+                        <button type="submit" class="btn app-btn-primary">Save Changes</button>
+                    </form>
+
+
+                    <form enctype="multipart/form-data" class="mt-5 settings-form" method="post"
+                          th:action="@{/profile/image}"
+                          th:object="${userForm}">
+                        <div class="mb-3 profile-photo">
+                            <label for="profileImage" class="form-label">Photo</label>
+
+
+                            <img id="profileImageDisplay"
+                                 th:src="@{'/stream/' + ${ userForm.getProfileImage() != null? userForm.getProfileImage().getPath() : '' }}"
+                                 alt="Profile Photo">
+
+
+                            <input type="file" id="profileImage" name="profileImage" accept="image/*"
+                                   onchange="previewImage(event)">
+                            <div th:if="${#fields.hasErrors('profileImage')}" th:errors="*{profileImage}"
+                                 class="text-danger">
+                            </div>
+                            <label for="profileImage" class="change-photo">Change</label>
+                        </div>
+
+                        <div class="mb-3"></div>
+                        <button type="submit" class="btn app-btn-primary">Save Changes</button>
+                    </form>
+                </div>
+
+
+                <script>
+
+                    function previewImage(event) {
+                        var reader = new FileReader();
+                        reader.onload = function () {
+                            var output = document.getElementById('profileImageDisplay');
+                            output.src = reader.result;
+                        };
+                        reader.readAsDataURL(event.target.files[0]);
+                    }
+
+                </script>
+
             </div>
         </div>
     </div>
+
+    <div class="row pt-5">
+        <div class="col-12 col-md-4">
+            <h3 class="section-title">Settings</h3>
+
+        </div>
+        <div class="col-12 col-md-8">
+            <div class="app-card app-card-settings shadow-sm p-4">
+                ...
+            </div>
+        </div>
+    </div>
+
 
 </div>
 

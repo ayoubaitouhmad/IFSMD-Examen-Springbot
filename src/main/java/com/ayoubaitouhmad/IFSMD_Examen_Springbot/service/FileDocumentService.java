@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -53,4 +54,20 @@ public class FileDocumentService  {
         return filename.lastIndexOf('.') > 0 ? filename.substring(filename.lastIndexOf('.')) : "";
     }
 
+
+    public boolean deleteFileDocument(Long id) {
+        Optional<FileDocument> fileDocumentOptional = fileDocumentRepository.findById(id);
+        if (fileDocumentOptional.isPresent()) {
+            FileDocument fileDocument = fileDocumentOptional.get();
+            Path filePath = Paths.get(UPLOAD_DIRECTORY).resolve(fileDocument.getFileName()).normalize().toAbsolutePath();
+            try {
+                Files.deleteIfExists(filePath);
+                fileDocumentRepository.deleteById(id);
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
 }

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "file_document", schema = "ifsmd_examen_springbot")
 public class FileDocument {
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
@@ -29,8 +30,8 @@ public class FileDocument {
 
     @Getter
     @Setter
-    @Column(name = "data")
-    private String data;
+    @Column(name = "path")
+    private String path;
 
 
 
@@ -46,10 +47,10 @@ public class FileDocument {
 
 
 
-    public FileDocument(String fileName, String fileType, String data) {
+    public FileDocument(String fileName, String fileType, String path) {
         this.fileName = fileName;
         this.fileType = fileType;
-        this.data = data;
+        this.path = path;
     }
 
     public FileDocument() {

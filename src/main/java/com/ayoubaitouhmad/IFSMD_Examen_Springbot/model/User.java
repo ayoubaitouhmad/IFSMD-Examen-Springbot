@@ -1,6 +1,11 @@
 package com.ayoubaitouhmad.IFSMD_Examen_Springbot.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
+
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,24 +25,31 @@ public class User  implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    @Size(min = 2, max = 20, message = "Username must be between 2 and 20 characters")
+    @NotBlank(message = "Name is mandatory")
     @Setter
+    @Column(name = "name")
     private String name;
 
+    @Email(message = "Email should be valid")
     @Setter
     private String email;
 
     @Setter
     private String password;
 
+    @Size(min = 3, max = 20, message = "name must be between 3  and 20 characters")
+    @NotBlank(message = "Username is mandatory")
     @Setter
+    @Column(name = "username")
     private String username;
 
 
     @Setter
     private String role;
 
-
+    @Setter
+    @Getter
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) // Eager fetching
     @JoinColumn(name = "profile_image_id", referencedColumnName = "id")
     private FileDocument profileImage;

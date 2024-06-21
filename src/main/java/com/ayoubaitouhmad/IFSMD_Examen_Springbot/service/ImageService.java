@@ -2,7 +2,6 @@ package com.ayoubaitouhmad.IFSMD_Examen_Springbot.service;
 
 import com.ayoubaitouhmad.IFSMD_Examen_Springbot.model.FileDocument;
 import com.ayoubaitouhmad.IFSMD_Examen_Springbot.repository.FileDocumentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
@@ -40,10 +39,10 @@ public class ImageService extends FileDocumentService {
 
 
 
-    public void createImage(MultipartFile file) throws IOException {
+    public FileDocument createImage(MultipartFile file) throws IOException {
         String filename = storeFile(file);
         FileDocument fileDocument = new FileDocument(file.getOriginalFilename(), file.getContentType(), filename);
-        this.createFileDocument(fileDocument);
+       return this.createFileDocument(fileDocument);
     }
 
 
@@ -66,5 +65,15 @@ public class ImageService extends FileDocumentService {
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+
+
+
+
+
+    public void deleteImage(){
+
+
     }
 }
