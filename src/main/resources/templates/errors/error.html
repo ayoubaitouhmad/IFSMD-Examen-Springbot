@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Error</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/static/css/portal.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Error</h1>
+    <p th:text="'Timestamp: ' + ${timestamp}"></p>
+    <p th:text="'Status: ' + ${status}"></p>
+    <p th:text="'Error: ' + ${error}"></p>
+    <p th:text="'Message: ' + ${message}"></p>
+    <p th:text="'Path: ' + ${path}"></p>
+    <a th:href="@{/profile}">Go back to profile</a>
+</div>
+</body>
+</html>

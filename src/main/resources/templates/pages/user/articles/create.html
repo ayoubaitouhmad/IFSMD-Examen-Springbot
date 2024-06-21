@@ -1,0 +1,55 @@
+    <html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{/layouts/app}">
+    <div layout:fragment="content">
+
+
+
+
+        <h1>Create New Article</h1>
+        <div class="app-card app-card-settings shadow-sm p-4">
+
+            <div th:if="${message}">
+                <p th:text="${message}"></p>
+            </div>
+
+            <div class="app-card-body">
+                <form enctype="multipart/form-data" class="settings-form" method="post" th:action="@{/articles/store}"
+                      th:object="${articleForm}">
+
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="title" placeholder="title" th:field="*{title}" >
+                        <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">description</label>
+                        <textarea style="height: 150px"
+                                th:field="*{description}"
+                                class="form-control " id="description" rows="3"></textarea>
+                        <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="content" class="form-label">content</label>
+                        <textarea style="height: 150px"
+                                  th:field="*{content}"
+                                  class="form-control tinymce " id="content" rows="3"></textarea>
+                        <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="text-danger"></div>
+                    </div>
+
+
+                    <button type="submit" class="btn app-btn-primary">Save Changes</button>
+                </form>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+
+
