@@ -9,5 +9,32 @@
     <p>This is an example page.</p>
 
 
+<!--    <li th:each="user : ${users}">-->
+<!--        <span th:text="${user.name}">Name</span> - <span th:text="${user.email}">Email</span>-->
+<!--    </li>-->
+
+    <div class="row">
+        <div th:each="article : ${articles}" class="col-6">
+            <div class="card mb-3">
+                <img src="https://cdn.pixabay.com/photo/2016/05/01/21/20/earth-1365995_1280.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title" >
+                        <a th:text="${article.getTitle()}" th:href="@{/articles/{id}(id=${article.id})}">
+
+                        </a>
+                    </h5>
+                    <p class="card-text" th:text="${article.getDescription()}">
+                    </p>
+                    <ul class="list-unstyled">
+                        <li><span class="text-muted">category:</span> <a href="">gym</a></li>
+                        <li><span class="text-muted">author:</span> <a href="" th:text="${article.getUser().getUsername()}">ayoub</a></li>
+                        <li><span class="text-muted">Uploaded:</span> 2019-01-01</li>
+                        <li><span class="text-muted">Updated:</span> 2020-01-01</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
