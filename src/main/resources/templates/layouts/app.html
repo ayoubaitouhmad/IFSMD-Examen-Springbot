@@ -17,10 +17,10 @@
     <link rel="shortcut icon" href="favicon.ico">
 
     <!-- FontAwesome JS-->
-    <script defer src="plugins/fontawesome/js/all.min.js"></script>
+    <script defer th:src="@{/plugins/fontawesome/js/all.min.js}"></script>
     <!-- App CSS -->
-    <link id="theme-style" rel="stylesheet" href="css/portal.css">
-    <link  rel="stylesheet" href="css/needed.css">
+    <link id="theme-style" rel="stylesheet" th:href="@{/css/portal.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 
 
 </head>
@@ -41,15 +41,22 @@
 
 
 
-<script src="plugins/popper.min.js"></script>
-<script src="plugins/bootstrap/js/bootstrap.min.js"></script>
+<script th:src="@{/plugins/popper.min.js}"></script>
+<script th:src="@{/plugins/bootstrap/js/bootstrap.min.js}"></script>
 
 <!-- Charts JS -->
-<script src="plugins/chart.js/chart.min.js"></script>
-<script src="js/index-charts.js"></script>
+<script th:src="@{/plugins/chart.js/chart.min.js}"></script>
+<script th:src="@{/js/index-charts.js}"></script>
 
-<!-- Page Specific JS -->
-<script src="js/app.js"></script>
 
+<script th:src="@{/js/app.js}"></script>
+<script src="https://cdn.tiny.cloud/1/z3xdv1qo0omgnwuz8s3mwnn42jo53eviyuztnn74imwr4yij/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+        selector: '.tinymce',
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+    });
+</script>
 </body>
 </html>
