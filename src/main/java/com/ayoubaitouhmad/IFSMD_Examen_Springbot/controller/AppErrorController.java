@@ -1,16 +1,13 @@
 package com.ayoubaitouhmad.IFSMD_Examen_Springbot.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.ServletWebRequest;
 
@@ -18,6 +15,7 @@ import java.util.Map;
 
 @Controller
 public class AppErrorController implements ErrorController {
+
     private final ErrorAttributes errorAttributes;
 
     public AppErrorController(ErrorAttributes errorAttributes) {
@@ -25,11 +23,22 @@ public class AppErrorController implements ErrorController {
     }
 
     @RequestMapping("/error")
-    public ResponseEntity<Map<String, Object>> handleError(HttpServletRequest request) {
+    public Object handleError(HttpServletRequest request, Model model) {
         ServletWebRequest servletWebRequest = new ServletWebRequest(request);
         Map<String, Object> errorAttributesMap = errorAttributes.getErrorAttributes(servletWebRequest, ErrorAttributeOptions.defaults());
         HttpStatus status = getStatus(request);
-        return new ResponseEntity<>(errorAttributesMap, status);
+
+        String contentType = request.getContentType();
+        if (contentType != null && contentType.contains("application/json")) {
+            return new ResponseEntity<>(errorAttributesMap, status);
+        } else {
+            model.addAttribute("timestamp", errorAttributesMap.get("timestamp"));
+            model.addAttribute("status", errorAttributesMap.get("status"));
+            model.addAttribute("error", errorAttributesMap.get("error"));
+            model.addAttribute("message", errorAttributesMap.get("message"));
+            model.addAttribute("path", errorAttributesMap.get("path"));
+            return "errors/error"; // The name of the Thymeleaf template for error pages
+        }
     }
 
     private HttpStatus getStatus(HttpServletRequest request) {
@@ -39,7 +48,4 @@ public class AppErrorController implements ErrorController {
         }
         return HttpStatus.valueOf(statusCode);
     }
-
-
-
 }

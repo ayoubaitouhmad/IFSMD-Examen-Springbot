@@ -21,3 +21,35 @@
     white-space: nowrap; /* Keeps the content on one line */
     z-index: 10; /* Ensures it appears above other content */
 }
+
+input[readonly]{
+    background-color: #e6e6e6;
+    font-size: 1em;
+}
+.profile-photo {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+}
+.profile-photo img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+.profile-photo input[type="file"] {
+    display: none;
+}
+.change-photo {
+    position: absolute;
+    bottom: 83%;
+    left: 67%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+
+

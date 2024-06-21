@@ -15,20 +15,15 @@ import java.sql.SQLException;
 @Controller
 @RestController
 public class WelcomeController extends BaseController {
-
-
     private final UserService userService;
-
     @Autowired
     public WelcomeController(FileDocumentService fileDocumentService, UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/welcome")
-    public ModelAndView welcome(ModelAndView modelAndView , @ModelAttribute("currentConnectedUser") User currentConnectedUser) throws SQLException {
+    public ModelAndView welcome(ModelAndView modelAndView) throws SQLException {
         modelAndView.setViewName("index");  // The name of the Thymeleaf template
         return modelAndView;
     }
-
-
 }

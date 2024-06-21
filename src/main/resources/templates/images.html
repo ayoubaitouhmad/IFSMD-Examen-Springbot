@@ -18,7 +18,7 @@
 <div>
     <ul>
         <li th:each="image : ${images}">
-            <img th:src="@{'/stream/' + ${image.getData()}}" alt="Uploaded Image" th:alt="${image.getFileName()}" />
+            <img th:src="@{'/stream/' + ${image.getPath()}}" alt="Uploaded Image" th:alt="${image.getFileName()}" />
 
         </li>
     </ul>
