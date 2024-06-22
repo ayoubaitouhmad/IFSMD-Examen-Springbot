@@ -58,6 +58,7 @@ public class User  implements UserDetails {
 
     @Getter
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OrderBy("createdAt asc")
     private List<Article> articles;
 
 

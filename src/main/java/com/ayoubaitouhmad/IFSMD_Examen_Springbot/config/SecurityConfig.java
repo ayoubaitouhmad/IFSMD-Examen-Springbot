@@ -18,18 +18,26 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private RedirectIfAuthenticatedFilter redirectIfAuthenticatedFilter;
 
+    @Autowired
+    public SecurityConfig(RedirectIfAuthenticatedFilter redirectIfAuthenticatedFilter) {
+        this.redirectIfAuthenticatedFilter = redirectIfAuthenticatedFilter;
+    }
 
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http , CustomUserDetailsService userDetailsService) throws Exception {
         http
+                .addFilterBefore(redirectIfAuthenticatedFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable) // Only for testing, enable this in production
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/register", "/error").permitAll()
@@ -40,6 +48,7 @@ public class SecurityConfig {
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .defaultSuccessUrl("/articles", true)
+
                         .permitAll()
                 )
                 .userDetailsService(userDetailsService)
@@ -70,6 +79,7 @@ public class SecurityConfig {
         provider.setUserDetailsService(userDetailsService);
         return provider;
     }
+
 
 }
 
