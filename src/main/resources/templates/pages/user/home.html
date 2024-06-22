@@ -80,10 +80,23 @@
                         <p class="card-text" th:text="${article.getDescription()}">
                         </p>
                         <ul class="list-unstyled">
-                            <li><span class="text-muted">category:</span> <a href="">gym</a></li>
-                            <li><span class="text-muted">author:</span> <a href="" th:text="${article.getUser().getUsername()}">ayoub</a></li>
-                            <li><span class="text-muted">Uploaded:</span> 2019-01-01</li>
-                            <li><span class="text-muted">Updated:</span> 2020-01-01</li>
+                            <li>
+                                <span class="text-muted">category:</span>
+                                <a href="">gym</a>
+                            </li>
+                            <li>
+                                <span class="text-muted">author:</span>
+                                <a th:href="@{|/articles/@${article.getUser().getUsername()}|}" th:text="${article.getUser().getUsername()}"></a>
+
+                            </li>
+                            <li>
+                                <span class="text-muted">Uploaded:</span>
+                                <span th:text="${article.getArticleUpdatedAt()}"></span>
+                            </li>
+                            <li>
+                                <span class="text-muted">Updated:</span>
+                                <span th:text="${article.getArticleCreatedAt()}"></span>
+                            </li>
                         </ul>
                     </div>
                 </div>
