@@ -6,3 +6,5 @@ VALUES ('test.jpg',
 
 SHOW FULL COLUMNS FROM filedocument;
 SHOW VARIABLES LIKE 'max_allowed_packet';
+
+

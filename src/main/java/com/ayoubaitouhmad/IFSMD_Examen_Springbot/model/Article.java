@@ -1,5 +1,6 @@
 package com.ayoubaitouhmad.IFSMD_Examen_Springbot.model;
 
+import groovy.lang.GString;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -52,10 +53,30 @@ public class Article {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @Setter
+
     @Getter
+    @Setter
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+
+
+    public String getArticleUpdatedAt() {
+
+        if (this.getUpdatedAt() != null) {
+            return this.getUpdatedAt().toString();
+        } else {
+            return "Update date not available";
+        }
+    }
+
+    public String getArticleCreatedAt() {
+        if (this.getUpdatedAt() != null) {
+            return this.getCreatedAt().toString();
+        } else {
+            return "Update date not available";
+        }
+    }
 
     public Article() {
 

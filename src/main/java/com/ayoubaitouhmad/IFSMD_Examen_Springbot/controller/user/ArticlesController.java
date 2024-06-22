@@ -8,6 +8,9 @@ import com.ayoubaitouhmad.IFSMD_Examen_Springbot.service.ArticleService;
 import com.ayoubaitouhmad.IFSMD_Examen_Springbot.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,16 +37,16 @@ public class ArticlesController extends BaseController {
     }
 
     @GetMapping("")
-    public String index(Model model) {
+    public String index(Model model,
+                        @RequestParam(value = "search", defaultValue = "") String searchTerm, @RequestParam(value = "page", defaultValue = "0") int page
+
+    ) {
+
+
+        logger.info("getUsername: {}",userService.getCurrentUser().getUsername());
         model.addAttribute("pageTitle", getCurrentUser().getName() + " Articles");
-        model.addAttribute("articles", getCurrentUser().getArticles());
-        return "pages/user/articles/index";
-    }
 
-    @GetMapping("/search")
-    public String search(@RequestParam("search") String searchTerm, Model model) {
         List<Article> articles = getCurrentUser().getArticles();
-
 
 
         if (searchTerm != null && !searchTerm.isEmpty()) {
@@ -51,18 +54,19 @@ public class ArticlesController extends BaseController {
                     .filter(article -> article.getTitle().toLowerCase().contains(searchTerm.toLowerCase()) ||
                             article.getContent().toLowerCase().contains(searchTerm.toLowerCase()))
                     .collect(Collectors.toList());
-            model.addAttribute("articles", articles);
-            model.addAttribute("searchTerm", searchTerm);
-        }else {
-            model.addAttribute("articles", getCurrentUser().getArticles());
-            model.addAttribute("searchTerm", null);
         }
 
+        model.addAttribute("searchTerm", searchTerm);
 
+
+        int start = (int) PageRequest.of(page, 8).getOffset();
+        int end = Math.min((start + PageRequest.of(page, 8).getPageSize()), articles.size());
+        Page<Article> articlePage = new PageImpl<>(articles.subList(start, end), PageRequest.of(page, 8), articles.size());
+
+
+        model.addAttribute("articles", articlePage);
         return "pages/user/articles/index";
     }
-
-
 
 
     @GetMapping("/create")
@@ -107,6 +111,83 @@ public class ArticlesController extends BaseController {
         model.addAttribute("pageTitle", article.getTitle());
         return "pages/user/articles/show";
     }
+
+
+    @GetMapping("/{id}/edit")
+    public String edit(@PathVariable Long id, Model model) {
+
+
+        try {
+            Article article = articleService.getArticleForEdit(id);
+            if (!model.containsAttribute("articleForm")) {
+                model.addAttribute("articleForm", article);
+            }
+            model.addAttribute("pageTitle", "Edit Article: " + article.getTitle());
+            return "pages/user/articles/edit";
+        } catch (RuntimeException e) {
+            model.addAttribute("message", e.getMessage());
+            return "redirect:/articles";  // Redirect or show an error page
+        }
+
+
+
+
+    }
+
+
+    @PostMapping("/{id}/update")
+    public String update(
+            @Valid @ModelAttribute("articleForm") Article articleForm,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            @PathVariable Long id, Model model
+    ) {
+        Article article = articleService.articleRepository().findById(id).orElseThrow(() -> new RuntimeException("User not found with id " + id));
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("message", "error");
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.articleForm", bindingResult);
+            redirectAttributes.addFlashAttribute("articleForm", articleForm);
+            return "redirect:/articles/"+article.getId()+"/edit";
+        }
+        article.setTitle(articleForm.getTitle());
+        article.setDescription(articleForm.getDescription());
+        article.setContent(articleForm.getContent());
+
+        articleService.getArticleRepository().save(article);
+
+
+        redirectAttributes.addFlashAttribute("message", "done");
+        return "redirect:/articles/"+article.getId()+"/edit";
+
+    }
+
+
+    @GetMapping("/{id}/delete")
+    public String delete(
+            RedirectAttributes redirectAttributes,
+            @PathVariable Long id, Model model
+    ) {
+
+        Article article = articleService.articleRepository().findById(id).orElseThrow(() -> new RuntimeException("User not found with id " + id));
+
+        try {
+            logger.info("getId {}:",article.getId());
+            articleService.deleteArticle(article);
+            redirectAttributes.addFlashAttribute("message", "Article deleted successfully!");
+        } catch (Exception e) {
+            logger.info("getMessage {}:",e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Article not found.");
+        }
+
+
+        logger.info("getTitle {}:",article.getTitle());
+
+
+        return "redirect:/articles";
+
+    }
+
 
 
 }

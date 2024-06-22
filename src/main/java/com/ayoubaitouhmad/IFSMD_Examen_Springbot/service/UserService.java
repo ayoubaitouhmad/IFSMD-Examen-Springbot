@@ -3,6 +3,7 @@ package com.ayoubaitouhmad.IFSMD_Examen_Springbot.service;
 import com.ayoubaitouhmad.IFSMD_Examen_Springbot.model.FileDocument;
 import com.ayoubaitouhmad.IFSMD_Examen_Springbot.model.User;
 import com.ayoubaitouhmad.IFSMD_Examen_Springbot.repository.UserRepository;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class UserService {
 
 
+    @Getter
     private final UserRepository userRepository;
     private final ImageService imageService;
 
@@ -26,6 +28,7 @@ public class UserService {
         this.userRepository = userRepository;
         this.imageService = imageService;
     }
+
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -74,11 +77,19 @@ public class UserService {
 
 
     public void updateProfilePicture(User user, MultipartFile file) throws IOException {
-        if(!file.isEmpty()) {
+        if (!file.isEmpty()) {
             FileDocument profilePicture = imageService.createImage(file);
             FileDocument oldProfilePicture = user.getProfileImage();
             user.setProfileImage(profilePicture);
             imageService.deleteFileDocument(oldProfilePicture.getId());
         }
+    }
+
+
+
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+        return findByUserName(currentUsername).orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

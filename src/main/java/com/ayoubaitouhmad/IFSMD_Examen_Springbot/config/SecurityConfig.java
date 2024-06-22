@@ -39,7 +39,7 @@ public class SecurityConfig {
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
-                        .defaultSuccessUrl("/welcome", true)
+                        .defaultSuccessUrl("/articles", true)
                         .permitAll()
                 )
                 .userDetailsService(userDetailsService)

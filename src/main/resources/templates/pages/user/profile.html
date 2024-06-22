@@ -19,7 +19,6 @@
                 <div class="app-card-body">
                     <form enctype="multipart/form-data" class="settings-form" method="post" th:action="@{/profile}"
                           th:object="${userForm}">
-
                         <div class="mb-3">
                             <label for="setting-input-1" class="form-label">Name</label>
                             <input type="text" class="form-control" id="setting-input-1" placeholder="Name"
@@ -31,11 +30,12 @@
                             <input type="email" class="form-control" id="setting-input-2" placeholder="Email"
                                    th:field="*{email}" required>
                             <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
-                                 class="text-danger"></div>
+                                 class="text-danger">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="setting-input-3" class="form-label">Username</label>
-                            <input type="text" class="form-control readonly" id="setting-input-3"
+                            <input type="text" class="form-control " id="setting-input-3"
                                    placeholder="Username" th:field="*{username}" readonly>
                         </div>
                         <button type="submit" class="btn app-btn-primary">Save Changes</button>

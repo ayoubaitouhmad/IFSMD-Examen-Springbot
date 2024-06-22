@@ -12,7 +12,7 @@
                     <!-- Post title-->
                     <h1 class="fw-bolder mb-1" th:text="${article.getTitle()}"></h1>
                     <!-- Post meta content-->
-                    <div class="text-muted fst-italic mb-2" th:text="${article.getCreatedAt().toString()}"></div>
+                    <div class="text-muted fst-italic mb-2" th:text="${article.getArticleUpdatedAt()}"></div>
                     <!-- Post categories-->
                     <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
                     <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
