@@ -44,7 +44,7 @@ public class ArticlesController extends BaseController {
 
 
         logger.info("getUsername: {}",userService.getCurrentUser().getUsername());
-        model.addAttribute("pageTitle", getCurrentUser().getName() + " Articles");
+        model.addAttribute("pageTitle", "My Articles");
 
         List<Article> articles = getCurrentUser().getArticles();
 
@@ -65,6 +65,7 @@ public class ArticlesController extends BaseController {
 
 
         model.addAttribute("articles", articlePage);
+        model.addAttribute("user", getCurrentUser());
         return "pages/user/articles/index";
     }
 
@@ -188,6 +189,38 @@ public class ArticlesController extends BaseController {
 
     }
 
+
+    @GetMapping("/@{username}")
+    public String listArticlesByUser(
+            @PathVariable String username, Model model,
+            @RequestParam(value = "search", defaultValue = "") String searchTerm,
+            @RequestParam(value = "page", defaultValue = "0") int page
+
+    ) {
+
+        User user = userService.findByUserName(username).orElseThrow(() -> new RuntimeException("User not found with username " + username));
+        List<Article> articles = user.getArticles();
+
+        if (searchTerm != null && !searchTerm.isEmpty()) {
+            articles = articles.stream()
+                    .filter(article -> article.getTitle().toLowerCase().contains(searchTerm.toLowerCase()) ||
+                            article.getContent().toLowerCase().contains(searchTerm.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+
+        int start = (int) PageRequest.of(page, 8).getOffset();
+        int end = Math.min((start + PageRequest.of(page, 8).getPageSize()), articles.size());
+        Page<Article> articlePage = new PageImpl<>(articles.subList(start, end), PageRequest.of(page, 8), articles.size());
+
+
+
+
+        model.addAttribute("user", user);
+        model.addAttribute("searchTerm", searchTerm);
+        model.addAttribute("pageTitle", " Articles");
+        model.addAttribute("articles", articlePage);
+        return "pages/user/articles/user-articles";
+    }
 
 
 }

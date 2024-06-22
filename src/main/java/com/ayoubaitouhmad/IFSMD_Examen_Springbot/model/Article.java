@@ -9,11 +9,14 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Entity
 @Table(name = "articles", schema = "ifsmd_examen_springbot")
 public class Article {
+
+    private final String DATES_FORMAT = "MMMM dd, yyyy HH:mm";
 
     @Getter
     @Id
@@ -64,17 +67,20 @@ public class Article {
     public String getArticleUpdatedAt() {
 
         if (this.getUpdatedAt() != null) {
-            return this.getUpdatedAt().toString();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATES_FORMAT);
+            return getUpdatedAt().format(formatter);
+
         } else {
             return "Update date not available";
         }
     }
 
     public String getArticleCreatedAt() {
-        if (this.getUpdatedAt() != null) {
-            return this.getCreatedAt().toString();
+        if (this.getCreatedAt() != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATES_FORMAT);
+            return getCreatedAt().format(formatter);
         } else {
-            return "Update date not available";
+            return "Creating date not available";
         }
     }
 
