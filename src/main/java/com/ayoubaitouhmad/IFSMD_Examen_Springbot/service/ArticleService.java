@@ -30,7 +30,11 @@ public class ArticleService {
         return articleRepository;
     }
 
-    public Page<Article> getAllArticles(int page) {
+    public List<Article> getAllArticles() {
+        return articleRepository.findAll();
+    }
+
+    public Page<Article> getAllArticlesPageable(int page) {
         Pageable pageable = PageRequest.of(page, 5, Sort.by("updatedAt").ascending());
         return articleRepository.findAll(pageable);
     }
