@@ -1,16 +1,17 @@
-
-
-
-
-
 <html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/auth}">
 <div layout:fragment="content">
-
     <div class="app-auth-branding mb-4">
         <a class="app-logo" href="index.html"><img class="logo-icon me-2" src="images/app-logo.svg" alt="logo"></a></div>
     <h2 class="auth-heading text-center mb-5">Log in to Portal</h2>
     <div class="auth-form-container text-start">
         <form th:action="@{/login}"  method="post">
+
+            <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                Invalid username or password.
+            </div>
+
+            <div th:replace="fragments :: alert"></div>
+
             <div class="email mb-3">
                 <label class="sr-only required" for="username">Username</label>
                 <input id="username" name="username" type="text" class="form-control" placeholder="username" required="required" value="mrx">
@@ -50,7 +51,5 @@
             <a class="text-link" th:href="@{/register}" >here</a>.
         </div>
     </div>
-
-
 </div>
 
