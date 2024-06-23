@@ -15,11 +15,11 @@
     <meta name="author" content="Xiaoying Riley at 3rd Wave Media">
     <link rel="shortcut icon" href="favicon.ico">
 
-    <!-- FontAwesome JS-->
     <script defer src="plugins/fontawesome/js/all.min.js"></script>
-    <!-- App CSS -->
-    <link id="theme-style" rel="stylesheet" href="css/portal.css">
-    <link  rel="stylesheet" href="css/needed.css">
+
+    <link id="theme-style" rel="stylesheet" th:href="@{/css/portal.css}">
+
+    <div layout:fragment="style"></div>
 
 </head>
 
@@ -35,13 +35,13 @@
             </div>
 
 
-            <footer  th:replace="include/footer :: footer"></footer>
+
         </div>
     </div>
 
 
 </div>
 
-
+<div layout:fragment="script"></div>
 </body>
 </html>
