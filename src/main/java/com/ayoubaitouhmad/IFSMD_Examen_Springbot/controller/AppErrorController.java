@@ -32,12 +32,22 @@ public class AppErrorController implements ErrorController {
         if (contentType != null && contentType.contains("application/json")) {
             return new ResponseEntity<>(errorAttributesMap, status);
         } else {
-            model.addAttribute("timestamp", errorAttributesMap.get("timestamp"));
-            model.addAttribute("status", errorAttributesMap.get("status"));
-            model.addAttribute("error", errorAttributesMap.get("error"));
-            model.addAttribute("message", errorAttributesMap.get("message"));
-            model.addAttribute("path", errorAttributesMap.get("path"));
-            return "errors/error"; // The name of the Thymeleaf template for error pages
+
+           switch (String.valueOf(errorAttributesMap.get("status"))){
+               case "404":
+                   return "errors/404";
+               case "403":
+                   return "errors/403";
+               default:
+                   model.addAttribute("timestamp", errorAttributesMap.get("timestamp"));
+                   model.addAttribute("status", errorAttributesMap.get("status"));
+                   model.addAttribute("error", errorAttributesMap.get("error"));
+                   model.addAttribute("message", errorAttributesMap.get("message"));
+                   model.addAttribute("path", errorAttributesMap.get("path"));
+                   return "errors/error"; // The name of the Thymeleaf template for error pages
+           }
+
+
         }
     }
 
