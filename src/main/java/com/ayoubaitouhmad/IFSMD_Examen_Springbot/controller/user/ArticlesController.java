@@ -187,7 +187,7 @@ public class ArticlesController extends BaseController {
 
         model.addAttribute("user", user);
         model.addAttribute("searchTerm", searchTerm);
-        model.addAttribute("pageTitle", " Articles");
+        model.addAttribute("pageTitle", user.getUsername() + " Articles");
         model.addAttribute("articles", articlePage);
         return "pages/user/articles/user-articles";
     }
