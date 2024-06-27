@@ -1,6 +1,5 @@
 package com.ayoubaitouhmad.IFSMD_Examen_Springbot.model;
 
-import groovy.lang.GString;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -14,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @Entity
 @Table(name = "articles", schema = "ifsmd_examen_springbot")
-public class Article {
+public class Article extends BaseModel {
 
     private final String DATES_FORMAT = "MMMM dd, yyyy HH:mm";
 

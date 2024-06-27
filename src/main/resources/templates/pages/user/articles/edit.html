@@ -6,9 +6,10 @@
     <h1 th:text=" ${articleForm.getTitle()}"></h1>
     <div class="app-card app-card-settings shadow-sm p-4">
 
-        <div th:if="${message}">
-            <p th:text="${message}"></p>
-        </div>
+        <div th:replace="fragments :: alert"></div>
+
+
+
 
         <div class="app-card-body">
             <form enctype="multipart/form-data" class="settings-form" method="post" th:action="@{/articles/{id}/update(id=${articleForm.id})}"

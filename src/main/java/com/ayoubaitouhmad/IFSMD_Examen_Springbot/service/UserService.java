@@ -1,5 +1,6 @@
 package com.ayoubaitouhmad.IFSMD_Examen_Springbot.service;
 
+import com.ayoubaitouhmad.IFSMD_Examen_Springbot.model.Article;
 import com.ayoubaitouhmad.IFSMD_Examen_Springbot.model.FileDocument;
 import com.ayoubaitouhmad.IFSMD_Examen_Springbot.model.User;
 import com.ayoubaitouhmad.IFSMD_Examen_Springbot.repository.UserRepository;
@@ -13,11 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class UserService {
-
 
     @Getter
     private final UserRepository userRepository;
@@ -28,7 +29,6 @@ public class UserService {
         this.userRepository = userRepository;
         this.imageService = imageService;
     }
-
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -54,11 +54,9 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-
     public Optional<User> findByUserName(String username) {
         return userRepository.findByUsername(username);
     }
-
 
     public Optional<User> connectedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -75,7 +73,6 @@ public class UserService {
         return userRepository.save(user);
     }
 
-
     public void updateProfilePicture(User user, MultipartFile file) throws IOException {
         if (!file.isEmpty()) {
             FileDocument profilePicture = imageService.createImage(file);
@@ -85,11 +82,13 @@ public class UserService {
         }
     }
 
-
-
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
         return findByUserName(currentUsername).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public boolean isUserOwnArticle(Article article, User user) {
+        return Objects.equals(article.getUser().getUsername(), user.getUsername());
     }
 }
